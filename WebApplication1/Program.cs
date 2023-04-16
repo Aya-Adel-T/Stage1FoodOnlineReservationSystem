@@ -22,7 +22,7 @@ namespace WebApplication1
                 builder.Configuration.GetConnectionString("MyConn1")
                 ));
             builder.Services.AddScoped<IRepository<Category>, CategoryServ>();
-
+            builder.Services.AddScoped<IRepository<FoodServed>, FoodServedRepoService>();
 
             var app = builder.Build();
 
