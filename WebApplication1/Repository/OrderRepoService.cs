@@ -14,27 +14,31 @@ namespace WebApplication1.Repository
 
         public List<Order> GetAll()
         {
-            throw new NotImplementedException();
+            return Context.Orders.ToList();
         }
 
         public Order? GetDetails(int id)
         {
-            throw new NotImplementedException();
+            return Context.Orders.Find(id);
         }
 
-        public void Insert(Order t)
+        public void Insert(Order order)
         {
-            throw new NotImplementedException();
+            Context.Orders.Add(order);
+            Context.SaveChanges();
         }
 
-        public void Update(int id, Order t)
+        public void Update(int id, Order order)
         {
-            throw new NotImplementedException();
+            Order orderUpdated = Context.Orders.Find(id);
+            orderUpdated.Name = order.Name;
+            Context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Context.Orders.Remove(Context.Orders.Find(id));
+            Context.SaveChanges();
         }
     }
 }
