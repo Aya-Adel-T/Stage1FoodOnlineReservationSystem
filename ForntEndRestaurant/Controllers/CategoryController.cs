@@ -13,6 +13,7 @@ namespace ForntEndRestaurant.Controllers
             _client = new HttpClient();
             _client.BaseAddress = baseAddress;
         }
+        [HttpGet]
         public IActionResult Index()
         {
             List<Category> CategorytList = new List<Category>();

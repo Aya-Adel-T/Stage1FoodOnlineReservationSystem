@@ -12,14 +12,14 @@ namespace ForntEndRestaurant.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         //string baseURL = "https://localhost:7191/";
-        Uri baseAddress = new Uri("https://localhost:44388/api");
-        private readonly HttpClient _client;
+        //Uri baseAddress = new Uri("https://localhost:44388/api");
+        //private readonly HttpClient _client;
        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _client = new HttpClient();
-            _client.BaseAddress = baseAddress;
+            //_client = new HttpClient();
+            //_client.BaseAddress = baseAddress;
         }
 
         public IActionResult Index() {
