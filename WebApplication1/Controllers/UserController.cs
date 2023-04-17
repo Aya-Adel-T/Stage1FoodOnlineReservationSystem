@@ -7,65 +7,64 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FoodServedController : ControllerBase
+    public class UserController : ControllerBase
     {
-        public IRepository<FoodServed> FoodRepo { get; set; }
-        public FoodServedController(IRepository<FoodServed> foodRepo)
+        public IRepository<User> UserRepo { get; set; }
+        public UserController(IRepository<User> userRepo)
         {
-            FoodRepo = foodRepo;
+            UserRepo = userRepo;
         }
         [HttpGet]
-        public ActionResult<List<FoodServed>> getFoodServed()
+        public ActionResult<List<User>> getUsers()
         {
-
-            return FoodRepo.GetAll();
+            return UserRepo.GetAll();
         }
         [HttpGet("{id}")]
-        public ActionResult<FoodServed> getById(int id)
+        public ActionResult<User> getById(int id)
         {
-            return FoodRepo.GetDetails(id);
+            return UserRepo.GetDetails(id);
         }
 
         [HttpDelete]
         public ActionResult delete(int id)
         {
-            FoodServed foodServed = FoodRepo.GetDetails(id);
+           User user = UserRepo.GetDetails(id);
 
-            if (foodServed == null)
+            if (user == null)
             {
                 return NotFound();
             }
-            FoodRepo.Delete(id);
-            return Ok(foodServed);
+            UserRepo.Delete(id);
+            return Ok(user);
         }
         [HttpPut]
-        public ActionResult put(int id, FoodServed food)
+        public ActionResult put(int id, User user)
         {
-            FoodServed? foodServed = FoodRepo.GetDetails(id);
-            if (id != foodServed.Id)
+            User? userr = UserRepo.GetDetails(id);
+            if (id != user.Id)
             {
                 //return StatusCode(400);
                 return BadRequest();
             }
-            if (food != null)
+            if (userr != null)
             {
 
 
-                FoodRepo.Update(id, food);
-                return Ok(foodServed);
+                UserRepo.Update(id, userr);
+                return Ok(user);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public ActionResult Post(FoodServed foodServed)
+        public ActionResult Post(User user)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    FoodRepo.Insert(foodServed);
-                    return Created("url", foodServed);
+                    UserRepo.Insert(user);
+                    return Created("url", user);
                     // return 201 & Url is the place where you added the object
                 }
                 catch (Exception ex)
@@ -75,6 +74,5 @@ namespace WebApplication1.Controllers
             }
             return BadRequest();
         }
-
     }
 }

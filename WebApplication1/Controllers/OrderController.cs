@@ -7,65 +7,65 @@ namespace WebApplication1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FoodServedController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        public IRepository<FoodServed> FoodRepo { get; set; }
-        public FoodServedController(IRepository<FoodServed> foodRepo)
+        public IRepository<Order> OrderRepo { get; set; }
+        public OrderController(IRepository<Order> orderRepo)
         {
-            FoodRepo = foodRepo;
+            OrderRepo = orderRepo;
         }
         [HttpGet]
-        public ActionResult<List<FoodServed>> getFoodServed()
+        public ActionResult<List<Order>> getOrders()
         {
 
-            return FoodRepo.GetAll();
+            return OrderRepo.GetAll();
         }
         [HttpGet("{id}")]
-        public ActionResult<FoodServed> getById(int id)
+        public ActionResult<Order> getById(int id)
         {
-            return FoodRepo.GetDetails(id);
+            return OrderRepo.GetDetails(id);
         }
 
         [HttpDelete]
         public ActionResult delete(int id)
         {
-            FoodServed foodServed = FoodRepo.GetDetails(id);
+            Order order= OrderRepo.GetDetails(id);
 
-            if (foodServed == null)
+            if (order == null)
             {
                 return NotFound();
             }
-            FoodRepo.Delete(id);
-            return Ok(foodServed);
+            OrderRepo.Delete(id);
+            return Ok(order);
         }
         [HttpPut]
-        public ActionResult put(int id, FoodServed food)
+        public ActionResult put(int id, Order order)
         {
-            FoodServed? foodServed = FoodRepo.GetDetails(id);
-            if (id != foodServed.Id)
+            Order? orderr = OrderRepo.GetDetails(id);
+            if (id != order.Id)
             {
                 //return StatusCode(400);
                 return BadRequest();
             }
-            if (food != null)
+            if (orderr != null)
             {
 
 
-                FoodRepo.Update(id, food);
-                return Ok(foodServed);
+                OrderRepo.Update(id, orderr);
+                return Ok(order);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public ActionResult Post(FoodServed foodServed)
+        public ActionResult Post(Order order)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    FoodRepo.Insert(foodServed);
-                    return Created("url", foodServed);
+                    OrderRepo.Insert(order);
+                    return Created("url", order);
                     // return 201 & Url is the place where you added the object
                 }
                 catch (Exception ex)
