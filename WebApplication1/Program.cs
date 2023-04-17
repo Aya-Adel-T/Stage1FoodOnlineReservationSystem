@@ -34,6 +34,7 @@ namespace WebApplication1
             builder.Services.AddCors(p=>p.AddPolicy("corspolicy",build =>
             {
                 build.WithOrigins("https://localhost:7007").AllowAnyMethod().AllowAnyHeader();
+                //build.WithOrigins("https://localhost:7137").AllowAnyMethod().AllowAnyHeader();
 
             }));
 

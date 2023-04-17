@@ -26,6 +26,7 @@ namespace WebApplication1.Models
         public int UserId { get; set; }
         public User User { get; set; }
         //public List<OrderDetails> OrderDetails { get; set; }
+        //public List<FoodServed> OrderDetails { get; set; }
 
 
         //public Restaurant Restaurant { get; set; }
