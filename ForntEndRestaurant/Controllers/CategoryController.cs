@@ -6,7 +6,7 @@ namespace ForntEndRestaurant.Controllers
 {
     public class CategoryController : Controller
     {
-        Uri baseAddress = new Uri("https://localhost:44388/api");
+        Uri baseAddress = new Uri("https://localhost:7191/api");
         private readonly HttpClient _client;
         public CategoryController()
         {
@@ -25,5 +25,6 @@ namespace ForntEndRestaurant.Controllers
             }
             return View(CategorytList);
         }
+
     }
 }
