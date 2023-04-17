@@ -24,6 +24,16 @@ namespace WebApplication1
             builder.Services.AddScoped<IRepository<Category>, CategoryServ>();
             builder.Services.AddScoped<IRepository<FoodServed>, FoodServedRepoService>();
 
+
+            //AddCors ^&*%^&$%^&#$%^#^
+            builder.Services.AddCors(p=>p.AddPolicy("corspolicy",build =>
+            {
+                build.WithOrigins("https://localhost:7007").AllowAnyMethod().AllowAnyHeader();
+
+            }));
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,6 +42,8 @@ namespace WebApplication1
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            //AddCors Name ^&*%^&$%^&#$%^#^
+            app.UseCors("corspolicy");
 
             app.UseHttpsRedirection();
 
