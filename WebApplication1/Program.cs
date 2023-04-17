@@ -23,6 +23,11 @@ namespace WebApplication1
                 ));
             builder.Services.AddScoped<IRepository<Category>, CategoryServ>();
             builder.Services.AddScoped<IRepository<FoodServed>, FoodServedRepoService>();
+            builder.Services.AddScoped<IRepository<Order>, OrderRepoService>();
+            builder.Services.AddScoped<IRepository<OrderDetails>, OrderDetailsRepoService>();
+            builder.Services.AddScoped<IRepository<Restaurant>, RestaurantRepoService>();
+            builder.Services.AddScoped<IRepository<User>, UserRepoService>();
+            builder.Services.AddScoped<IRepository<UserType>, UserTypeRepoService>();
 
 
             //AddCors ^&*%^&$%^&#$%^#^
