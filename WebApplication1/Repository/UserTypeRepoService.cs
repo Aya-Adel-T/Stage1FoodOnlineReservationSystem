@@ -27,7 +27,7 @@ namespace WebApplication1.Repository
             Context.SaveChanges();
         }
 
-        public void Update(int id, UserType userType)
+        public void UpdateBayza(int id, UserType userType)
         {
             UserType userTypeUpdated = Context.UserTypes.Find(id);
             userTypeUpdated.Name = userType.Name;
@@ -38,6 +38,11 @@ namespace WebApplication1.Repository
         {
             Context.UserTypes.Remove(Context.UserTypes.Find(id));
             Context.SaveChanges();
+        }
+
+        public void Update(UserType entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

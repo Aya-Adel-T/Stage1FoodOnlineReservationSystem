@@ -51,7 +51,7 @@ namespace WebApplication1.Controllers
             {
 
 
-                RestaurantRepo.Update(id, rstrnt);
+                RestaurantRepo.UpdateBayza(id, rstrnt);
                 return Ok(restaurant);
             }
             return NotFound();

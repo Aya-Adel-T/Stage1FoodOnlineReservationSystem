@@ -29,7 +29,7 @@ namespace WebApplication1.Repository
             Context.SaveChanges();
         }
 
-        public void Update(int id, Restaurant restaurant)
+        public void UpdateBayza(int id, Restaurant restaurant)
         {
             Restaurant RestaurantUpdated = Context.Restaurants.Find(id);
             RestaurantUpdated.Name = restaurant.Name;
@@ -40,6 +40,11 @@ namespace WebApplication1.Repository
         {
             Context.Restaurants.Remove(Context.Restaurants.Find(id));
             Context.SaveChanges();
+        }
+
+        public void Update(Restaurant entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

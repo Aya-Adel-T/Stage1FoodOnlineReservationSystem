@@ -24,36 +24,29 @@ namespace WebApplication1.Controllers
         }
         [HttpGet("{id}")]
         public ActionResult<Category> getById(int id)
-        {
+        { 
             return CategoryRepo.GetDetails(id);
         }
 
-        [HttpDelete]
-        public ActionResult deleteCategory(int id)
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCategory(int id)
         {
-            Category category = CategoryRepo.GetDetails(id);
+            //Category category = CategoryRepo.GetDetails(id);
 
-            if (category == null)
-            {
-                return NotFound();
-            }
+            //if (category == null)
+            //{
+            //    return NotFound();
+            //}
             CategoryRepo.Delete(id);
-            return Ok(category);
+            return Ok();
         }
+
         [HttpPut]
-        public ActionResult put(int id, Category ctgry)
+        public ActionResult Put (Category category)
         {
-            Category? category = CategoryRepo.GetDetails(id);
-            if (id != category.Id)
+            if (category != null && category.Id != 0)
             {
-                //return StatusCode(400);
-                return BadRequest();
-            }
-            if (category != null)
-            {
-               
-                          
-                CategoryRepo.Update(id, ctgry);
+                CategoryRepo.Update(category);
                 return Ok(category);
             }
             return NotFound();

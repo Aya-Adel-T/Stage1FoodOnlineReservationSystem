@@ -50,7 +50,7 @@ namespace WebApplication1.Controllers
             {
 
 
-                UserRepo.Update(id, userr);
+                UserRepo.UpdateBayza(id, userr);
                 return Ok(user);
             }
             return NotFound();

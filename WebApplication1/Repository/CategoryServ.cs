@@ -29,13 +29,20 @@ namespace WebApplication1.Repository
             Context.SaveChanges();
         }
 
-        public void Update(int id, Category category)
+        public void UpdateBayza(int id, Category category)
         {
 
             Category CategoryUpdated = Context.Categories.Find(id);
             CategoryUpdated.Name = category.Name;     
             Context.SaveChanges();
         }
+
+        public void Update(Category category)
+        {
+            Context.Categories.Update(category);
+            Context.SaveChanges();
+        }
+
         public void Delete(int id)
         {
             Context.Categories.Remove(Context.Categories.Find(id));

@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
             }
             if (orderrDetails != null)
             {
-                OrderDetailsRepo.Update(id, orderrDetails);
+                OrderDetailsRepo.UpdateBayza(id, orderrDetails);
                 return Ok(orderDetails);
             }
             return NotFound();

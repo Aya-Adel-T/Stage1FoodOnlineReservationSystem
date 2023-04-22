@@ -51,7 +51,7 @@ namespace WebApplication1.Controllers
             {
 
 
-                OrderRepo.Update(id, orderr);
+                OrderRepo.UpdateBayza(id, orderr);
                 return Ok(order);
             }
             return NotFound();

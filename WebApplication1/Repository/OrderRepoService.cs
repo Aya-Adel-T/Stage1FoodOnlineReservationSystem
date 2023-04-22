@@ -28,7 +28,7 @@ namespace WebApplication1.Repository
             Context.SaveChanges();
         }
 
-        public void Update(int id, Order order)
+        public void UpdateBayza(int id, Order order)
         {
             Order orderUpdated = Context.Orders.Find(id);
             orderUpdated.Name = order.Name;
@@ -39,6 +39,11 @@ namespace WebApplication1.Repository
         {
             Context.Orders.Remove(Context.Orders.Find(id));
             Context.SaveChanges();
+        }
+
+        public void Update(Order entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

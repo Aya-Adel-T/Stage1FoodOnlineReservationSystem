@@ -51,7 +51,7 @@ namespace WebApplication1.Controllers
             {
 
 
-                UserTypeRepo.Update(id, userType1);
+                UserTypeRepo.UpdateBayza(id, userType1);
                 return Ok(userType);
             }
             return NotFound();
