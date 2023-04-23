@@ -7,7 +7,7 @@
         {
             var Client = new HttpClient();
             Client.BaseAddress = new Uri("https://localhost:7191/api");
-            return(Client);
+            return Client;
         }
     }
 }

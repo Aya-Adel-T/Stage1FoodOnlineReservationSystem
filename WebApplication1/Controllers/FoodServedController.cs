@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
@@ -17,8 +18,13 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public ActionResult<List<FoodServed>> getFoodServed()
         {
+            var listOfFoodServed = FoodRepo.GetAll();
 
-            return FoodRepo.GetAll();
+            if(listOfFoodServed!=null && listOfFoodServed.Count()>0)
+            {
+                return Ok(listOfFoodServed);
+            }
+            return Ok(listOfFoodServed);
         }
         [HttpGet("{id}")]
         public ActionResult<FoodServed> getById(int id)

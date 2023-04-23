@@ -46,10 +46,10 @@ namespace BackEndRestaurant.Controllers
         {
             List<Category> CategorytList = new List<Category>();
             HttpClient Client = _api.Initial();
-            HttpResponseMessage resonse = await Client.GetAsync("api/Category/getCategories");
-            if (resonse.IsSuccessStatusCode)
+            HttpResponseMessage response = await Client.GetAsync("api/Category/getCategories");
+            if (response.IsSuccessStatusCode)
             {
-                string data = resonse.Content.ReadAsStringAsync().Result;
+                string data = response.Content.ReadAsStringAsync().Result;
                 CategorytList = JsonConvert.DeserializeObject<List<Category>>(data);
             }
             return View(CategorytList);

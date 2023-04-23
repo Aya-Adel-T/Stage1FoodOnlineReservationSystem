@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace WebApplication1.Models
 {
@@ -17,7 +18,8 @@ namespace WebApplication1.Models
         [Required]
         public int MobileNumber { get; set; }
         public string Description { get; set; }
-        public List<FoodServed> FoodServed { get; set; }
+        //[JsonIgnore]
+        public virtual ICollection<FoodServed> FoodServed { get; set; }
 
 
 

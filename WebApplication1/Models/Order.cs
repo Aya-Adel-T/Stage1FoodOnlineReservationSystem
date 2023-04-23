@@ -24,7 +24,7 @@ namespace WebApplication1.Models
         public OrderStatus OrderStatus { get; set; }
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         //public List<OrderDetails> OrderDetails { get; set; }
         //public List<FoodServed> OrderDetails { get; set; }
 

@@ -31,7 +31,7 @@ namespace WebApplication1.Models
         [ForeignKey(nameof(UserType))]
         public int UserTypeId { get; set; }
         public virtual UserType UserType { get; set; }
-        public List<Order> Orders { get; set; }
+        public virtual List<Order> Orders { get; set; }
         //[Required]
         //public UserType UserType { get; set; }
 

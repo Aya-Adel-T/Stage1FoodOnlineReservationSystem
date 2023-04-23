@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
@@ -12,19 +13,18 @@ namespace WebApplication1.Models
         [ForeignKey("Category")]
         public int CategoryID { get; set; }
 
-        public virtual Category Categories { get; set; }
+        public virtual Category Category { get; set; }
 
         [ForeignKey("Restaurant")]
         public int RestaurantID { get; set; }
 
         public virtual Restaurant Restaurant { get; set; }
+
+
         //[ForeignKey("Order")]
         //public int OrderID { get; set; }
 
         //public virtual Order Order { get; set; }
-
-
-
 
 
         //public FoodServed(int id, string name, Category category)
