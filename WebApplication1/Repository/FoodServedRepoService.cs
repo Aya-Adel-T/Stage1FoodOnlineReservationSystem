@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using WebApplication1.Data;
 using WebApplication1.Models;
@@ -34,10 +35,19 @@ namespace WebApplication1.Repository
 
         public FoodServed? GetDetails(int id)
         {
+            var FoodServedDetails = new FoodServed();
             using (var customContext = Context.CreateDbContext())
             {
-                return customContext.FoodServed.Find(id);
+                FoodServedDetails =  customContext.FoodServed.Find(id);
             }
+
+            using (var customContext = Context.CreateDbContext())
+            {
+                FoodServedDetails.Restaurant = customContext.Restaurants.First(r => r.Id == FoodServedDetails.RestaurantID);
+                FoodServedDetails.Category = customContext.Categories.First(r => r.Id == FoodServedDetails.CategoryID);
+            }
+            return (FoodServedDetails);
+
         }
 
         public void Insert(FoodServed foodServed)
@@ -47,9 +57,11 @@ namespace WebApplication1.Repository
                 customContext.FoodServed.Add(foodServed);
                 customContext.SaveChanges();
             }
+           
         }
 
         public void UpdateBayza(int id, FoodServed t)
+            //Not Used
         {
             using (var customContext = Context.CreateDbContext())
             {
@@ -64,13 +76,19 @@ namespace WebApplication1.Repository
             using (var customContext = Context.CreateDbContext())
             {
                 customContext.FoodServed.Remove(new FoodServed() { Id = id});
+                // customContext.FoodServed.Remove(customContext.FoodServed.Find(id)); AnotherWay bad performence
                 customContext.SaveChanges();
             }
+          
         }
 
-        public void Update(FoodServed entity)
+        public void Update(FoodServed foodServed)
         {
-            throw new NotImplementedException();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.FoodServed.Update(foodServed);
+                customContext.SaveChanges();
+            }
         }
     }
 }

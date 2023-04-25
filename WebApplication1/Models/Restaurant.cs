@@ -5,6 +5,11 @@ namespace WebApplication1.Models
 {
     public class Restaurant
     {
+        public Restaurant()
+        {
+            FoodServeds = new List<FoodServed>();
+        }
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -18,8 +23,7 @@ namespace WebApplication1.Models
         [Required]
         public int MobileNumber { get; set; }
         public string Description { get; set; }
-        //[JsonIgnore]
-        public virtual ICollection<FoodServed> FoodServed { get; set; }
+        public virtual ICollection<FoodServed?> FoodServeds { get; set; }
 
 
 

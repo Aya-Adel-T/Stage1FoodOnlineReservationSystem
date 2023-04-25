@@ -5,60 +5,53 @@ using WebApplication1.Models;
 
 namespace BackEndRestaurant.Controllers
 {
-    public class FoodServedBackController : Controller
+    public class RestaurantBackController : Controller
     {
         APIClient _api = new APIClient();
-       
-        public async Task<IActionResult> Index()
-        {
 
+
+        public async Task<ActionResult<IEnumerable<Restaurant>>> Index()
+        {
             HttpClient Client = _api.Initial();
             try
             {
-                var foodServedList = await Client.GetFromJsonAsync<List<FoodServed>>("api/FoodServed/getFoodServed");
-                return View(foodServedList);
+                var RestaurantsList = await Client.GetFromJsonAsync<List<Restaurant>>("api/Restaurant/getRestaurants");
+                return View(RestaurantsList);
             }
             catch (Exception e)
             {
                 return View();
             }
         }
-
-
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            FoodServed foodServed = new FoodServed();
+            Restaurant Restaurant = new Restaurant();
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.GetAsync($"api/FoodServed/getById/{id}");
+            HttpResponseMessage res = await client.GetAsync($"api/Restaurant/getById/{id}");
             if (res.IsSuccessStatusCode)
             {
-                string data = res.Content.ReadAsStringAsync().Result;
-                foodServed = JsonConvert.DeserializeObject<FoodServed>(data);
+                string data = await res.Content.ReadAsStringAsync();
+                Restaurant = JsonConvert.DeserializeObject<Restaurant>(data);
             }
-            return View(foodServed);
+            return View(Restaurant);
         }
-
         public IActionResult Create()
         {
-
-
             return View();
-
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FoodServed foodServed)
+        public async Task<IActionResult> Create(Restaurant restaurant)
         {
-
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.PostAsJsonAsync($"api/FoodServed/Post", foodServed); 
+            HttpResponseMessage res = await client.PostAsJsonAsync($"api/Restaurant/Post", restaurant);
             if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
             return View();
-        } 
+        }
 
         public ActionResult Edit(int id)
         {
@@ -66,28 +59,30 @@ namespace BackEndRestaurant.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, FoodServed foodServed)
+        public async Task<ActionResult> Edit(int id, Restaurant restaurant)
         {
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.PutAsJsonAsync("api/FoodServed/Put", foodServed);
+            HttpResponseMessage res = await client.PutAsJsonAsync("api/Restaurant/Put", restaurant);
 
             if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
             }
 
-            return View(foodServed);
+            return View(restaurant);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
             HttpClient Client = _api.Initial();
-                HttpResponseMessage res = await Client.DeleteAsync($"api/FoodServed/delete/{id}");
-                if (res.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
+            HttpResponseMessage res = await Client.DeleteAsync($"api/Restaurant/delete/{id}");
+            if (res.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
+
+
     }
 }

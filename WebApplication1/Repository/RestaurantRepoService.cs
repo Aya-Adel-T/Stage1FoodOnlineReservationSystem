@@ -1,50 +1,81 @@
 ﻿using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication1.Repository
 {
-    public class RestaurantRepoService : IRepository<Restaurant>
+    public class RestaurantRepoService :BaseRepoService, IRepository<Restaurant>
     {
-        public ElDbContext Context { get; set; }
-        public RestaurantRepoService(ElDbContext context)
+   
+        public RestaurantRepoService(IDbContextFactory <ElDbContext> context) :base(context)
         {
-            Context = context;
+        
 
         }
 
         public List<Restaurant> GetAll()
         {
-            return Context.Restaurants.ToList();
+            List<Restaurant> RestaurantsList = new List<Restaurant>();
+            //return Context.Categories.ToList();
+            using (var customContext = Context.CreateDbContext())
+            {
+                RestaurantsList = customContext.Restaurants.ToList();
+            }
+
+            return RestaurantsList;
         }
 
         public Restaurant? GetDetails(int id)
         {
-            return Context.Restaurants.Find(id);
+            var RestaurantDetails = new Restaurant();
+            using (var customContext = Context.CreateDbContext())
+            {
+                RestaurantDetails = customContext.Restaurants.Find(id);
+            }
+            using (var customContext = Context.CreateDbContext())
+            {
+                RestaurantDetails.FoodServeds = customContext.FoodServed.Where(f => f.RestaurantID == id).ToList();
+            }
+
+            return RestaurantDetails;
         }
 
         public void Insert(Restaurant restaurant)
         {
-            Context.Restaurants.Add(restaurant);
-            Context.SaveChanges();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.Restaurants.Add(restaurant);
+                customContext.SaveChanges();
+            }
         }
 
         public void UpdateBayza(int id, Restaurant restaurant)
-        {
-            Restaurant RestaurantUpdated = Context.Restaurants.Find(id);
-            RestaurantUpdated.Name = restaurant.Name;
-            Context.SaveChanges();
+        { //NotUsed
+            using (var CustomContext = Context.CreateDbContext())
+            {
+                Restaurant RestaurantUpdated = CustomContext.Restaurants.Find(id);
+                RestaurantUpdated.Name = restaurant.Name;
+                CustomContext.SaveChanges();
+            }
         }
 
         public void Delete(int id)
         {
-            Context.Restaurants.Remove(Context.Restaurants.Find(id));
-            Context.SaveChanges();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.Restaurants.Remove(customContext.Restaurants.Find(id));
+                customContext.SaveChanges();
+            }
         }
 
-        public void Update(Restaurant entity)
+        public void Update(Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.Restaurants.Update(restaurant);
+                customContext.SaveChanges();
+            }
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class FoodServedController : ControllerBase
     {
@@ -32,39 +30,33 @@ namespace WebApplication1.Controllers
             return FoodRepo.GetDetails(id);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult delete(int id)
         {
-            FoodServed foodServed = FoodRepo.GetDetails(id);
+            //FoodServed foodServed = FoodRepo.GetDetails(id);
 
-            if (foodServed == null)
-            {
-                return NotFound();
-            }
+            //if (foodServed == null)
+            //{
+            //    return NotFound();
+            //}
             FoodRepo.Delete(id);
-            return Ok(foodServed);
+            //return Ok(foodServed); 
+            return Ok();
         }
         [HttpPut]
-        public ActionResult put(int id, FoodServed food)
+        public ActionResult put(FoodServed foodServed)
         {
-            FoodServed? foodServed = FoodRepo.GetDetails(id);
-            if (id != foodServed.Id)
+            if (foodServed != null && foodServed.Id != 0)
             {
-                //return StatusCode(400);
-                return BadRequest();
-            }
-            if (food != null)
-            {
+                FoodRepo.Update(foodServed);
 
-
-                FoodRepo.UpdateBayza(id, food);
                 return Ok(foodServed);
             }
             return NotFound();
         }
 
         [HttpPost]
-        public ActionResult Post(FoodServed foodServed)
+        public ActionResult Post([FromBody] FoodServed foodServed)
         {
             if (ModelState.IsValid)
             {

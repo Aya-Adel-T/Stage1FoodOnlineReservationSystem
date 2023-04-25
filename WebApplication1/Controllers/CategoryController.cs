@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
@@ -10,7 +8,6 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-
         public IRepository<Category> CategoryRepo { get; set; }
         public CategoryController(IRepository<Category> categoryRepo)
         {
@@ -70,8 +67,5 @@ namespace WebApplication1.Controllers
             }
             return BadRequest();
         }
-
-
-
     }
 }

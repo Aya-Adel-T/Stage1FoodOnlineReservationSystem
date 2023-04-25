@@ -1,48 +1,76 @@
-﻿using WebApplication1.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
 using WebApplication1.Models;
 namespace WebApplication1.Repository
 {
-    public class UserTypeRepoService:IRepository<UserType>
+    public class UserTypeRepoService: BaseRepoService,IRepository<UserType>
     {
-        public ElDbContext Context { get; set; }
+        
 
-        public UserTypeRepoService(ElDbContext context)
+        public UserTypeRepoService(IDbContextFactory<ElDbContext> context):base(context)
         {
-            Context = context;
+          
         }
 
         public List<UserType> GetAll()
         {
-            return Context.UserTypes.ToList();
+            //return Context.UserTypes.ToList();
+            List<UserType> UserTypeList = new List<UserType>();
+
+            using (var customContext = Context.CreateDbContext())
+            {
+                UserTypeList = customContext.UserTypes.ToList();
+            }
+            return UserTypeList;
         }
 
         public UserType? GetDetails(int id)
         {
-            return Context.UserTypes.Find(id);
+            //return Context.UserTypes.Find(id);
+            var UserTypeDetails = new UserType();
+            using (var customContext = Context.CreateDbContext())
+            {
+                UserTypeDetails = customContext.UserTypes.Find(id);
+            }
+            return (UserTypeDetails);
+
         }
 
         public void Insert(UserType userType)
         {
-            Context.UserTypes.Add(userType);
-            Context.SaveChanges();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.UserTypes.Add(userType);
+                customContext.SaveChanges();
+            }
         }
 
         public void UpdateBayza(int id, UserType userType)
         {
-            UserType userTypeUpdated = Context.UserTypes.Find(id);
-            userTypeUpdated.Name = userType.Name;
-            Context.SaveChanges();
+            using (var customContext = Context.CreateDbContext())
+            {
+                UserType userTypeUpdated = customContext.UserTypes.Find(id);
+                userTypeUpdated.Name = userType.Name;
+                customContext.SaveChanges();
+            }
         }
 
         public void Delete(int id)
         {
-            Context.UserTypes.Remove(Context.UserTypes.Find(id));
-            Context.SaveChanges();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.UserTypes.Remove(customContext.UserTypes.Find(id));
+                customContext.SaveChanges();
+            }
         }
 
-        public void Update(UserType entity)
+        public void Update(UserType userType)
         {
-            throw new NotImplementedException();
+            using (var customContext = Context.CreateDbContext())
+            {
+                customContext.UserTypes.Update(userType);
+                customContext.SaveChanges();
+            }
         }
     }
 }

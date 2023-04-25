@@ -44,17 +44,29 @@ namespace BackEndRestaurant.Controllers
        
         public async Task<IActionResult> Index()
         {
-            List<Category> CategorytList = new List<Category>();
             HttpClient Client = _api.Initial();
-            HttpResponseMessage response = await Client.GetAsync("api/Category/getCategories");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                CategorytList = JsonConvert.DeserializeObject<List<Category>>(data);
+                var CategoryList = await Client.GetFromJsonAsync<List<Category>>("api/Category/getCategories");
+                return View(CategoryList);
             }
-            return View(CategorytList);
-        }
+            catch (Exception e)
+            {
+                return View();
+            }
 
+            #region Another Way to get the list of categories
+            //List<Category> CategorytList = new List<Category>();
+            //HttpClient Client = _api.Initial();
+            //HttpResponseMessage response = await Client.GetAsync("api/Category/getCategories");
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    string data = response.Content.ReadAsStringAsync().Result;
+            //    CategorytList = JsonConvert.DeserializeObject<List<Category>>(data);
+            //}
+            //return View(CategorytList);
+            #endregion
+        }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
@@ -74,21 +86,38 @@ namespace BackEndRestaurant.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
-            HttpClient Client = _api.Initial();
+            //Category Category = new Category();
 
-            var PostCategory = Client.PostAsJsonAsync<Category>("api/Category/Post", category);
-            PostCategory.Wait();
-            var data = PostCategory.Result;
-            if (data.IsSuccessStatusCode)
+
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.PostAsJsonAsync($"api/Category/Post",category); 
+            if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
             return View();
         }
+        #region An Old way for create Method
+        //[HttpPost]
+        //public IActionResult Create(Category category)
+        //{
+        //    HttpClient Client = _api.Initial();
+
+        //    var PostCategory = Client.PostAsJsonAsync<Category>("api/Category/Post", category);
+        //    PostCategory.Wait();
+        //    var data = PostCategory.Result;
+        //    if (data.IsSuccessStatusCode)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
+        #endregion
+
 
 
         public ActionResult Edit(int id)
@@ -97,48 +126,74 @@ namespace BackEndRestaurant.Controllers
         }
 
 
-
         [HttpPost]
-        public ActionResult Edit(int id, Category category)
+        public async Task<ActionResult> Edit(int id, Category category)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:7191/api/");
-                var putTask = client.PutAsJsonAsync<Category>("Category/Put", category);
-                putTask.Wait();
-                var result = putTask.Result;
-                if (result.IsSuccessStatusCode)
+          
+                HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.PutAsJsonAsync<Category>("api/Category/Put", category);
+              
+                if (res.IsSuccessStatusCode)
                 {
                     return RedirectToAction("index");
                 }
-            }
+            
             return View(category);
         }
+        #region An old way for Editing (Working) 
+        //[HttpPost]
+        //public ActionResult Edit(int id, Category category)
+        //{
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri("https://localhost:7191/api/");
+        //        var putTask = client.PutAsJsonAsync<Category>("Category/Put", category);
+        //        putTask.Wait();
+        //        var result = putTask.Result;
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            return RedirectToAction("index");
+        //        }
+        //    }
+        //    return View(category);
+        //}
+        #endregion
 
-
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            using (var Client = new HttpClient())
-            {
-                //    Client.BaseAddress = new Uri("https://localhost:7191/api");
-                Client.BaseAddress = new Uri("https://localhost:7191/api/");
-                var deleteCategory = Client.DeleteAsync($"Category/DeleteCategory/{id}");
-                deleteCategory.Wait();
-                var result = deleteCategory.Result;
 
-                if (result.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
+            HttpClient Client = _api.Initial();
+            HttpResponseMessage res = await Client.DeleteAsync($"api/Category/DeleteCategory/{id}");
+
+
+            if (res.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
             }
 
             return View();
         }
 
-     
 
 
+        #region Another way for deleting
+        //public IActionResult Delete(int id)
+        //{
 
+        //        HttpClient Client = _api.Initial();
+        //        var deleteCategory = Client.DeleteAsync($"api/Category/DeleteCategory/{id}");
+        //        deleteCategory.Wait();
+        //        var result = deleteCategory.Result;
+
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            return RedirectToAction("Index");
+        //        }
+
+
+        //    return View();
+        //}
+        #endregion
 
         #region Trials
         #region Delete Trial
@@ -211,9 +266,9 @@ namespace BackEndRestaurant.Controllers
         //    }
         //}
 
-        #endregion
+    #endregion
 
-        //#region The New way for edit
+        #region The New way for edit
         //public async Task<ActionResult> Edit()
         //{
         //    HttpClient Client = _api.Initial();
@@ -228,6 +283,7 @@ namespace BackEndRestaurant.Controllers
         //}
         //#endregion
         #endregion
-
+    
+        #endregion
     }
 }

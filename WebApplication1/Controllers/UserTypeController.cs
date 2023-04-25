@@ -5,7 +5,7 @@ using WebApplication1.Repository;
 
 namespace WebApplication1.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserTypeController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
             return UserTypeRepo.GetDetails(id);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult delete(int id)
         {
            UserType userType = UserTypeRepo.GetDetails(id);

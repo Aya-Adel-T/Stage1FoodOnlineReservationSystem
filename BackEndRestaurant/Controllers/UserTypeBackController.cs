@@ -1,22 +1,24 @@
 ﻿using BackEndRestaurant.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebApplication1.Models;
 
 namespace BackEndRestaurant.Controllers
 {
-    public class FoodServedBackController : Controller
+    public class UserTypeBackController : Controller
     {
         APIClient _api = new APIClient();
-       
+
+        // GET: UserTypesController
         public async Task<IActionResult> Index()
         {
 
             HttpClient Client = _api.Initial();
             try
             {
-                var foodServedList = await Client.GetFromJsonAsync<List<FoodServed>>("api/FoodServed/getFoodServed");
-                return View(foodServedList);
+                var UserTypesList = await Client.GetFromJsonAsync<List<UserType>>("api/UserType/getUserTypes");
+                return View(UserTypesList);
             }
             catch (Exception e)
             {
@@ -24,69 +26,72 @@ namespace BackEndRestaurant.Controllers
             }
         }
 
-
+        // GET: UserTypesController/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            FoodServed foodServed = new FoodServed();
+            UserType userType = new UserType();
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.GetAsync($"api/FoodServed/getById/{id}");
+            HttpResponseMessage res = await client.GetAsync($"api/UserType/getById/{id}");
             if (res.IsSuccessStatusCode)
             {
                 string data = res.Content.ReadAsStringAsync().Result;
-                foodServed = JsonConvert.DeserializeObject<FoodServed>(data);
+                userType = JsonConvert.DeserializeObject<UserType>(data);
             }
-            return View(foodServed);
+            return View(userType);
         }
 
+        // GET: UserTypesController/Create
         public IActionResult Create()
         {
-
-
             return View();
-
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FoodServed foodServed)
+        public async Task<IActionResult> Create(UserType userType)
         {
+           
 
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.PostAsJsonAsync($"api/FoodServed/Post", foodServed); 
+            HttpResponseMessage res = await client.PostAsJsonAsync($"api/UserType/Post", userType);
             if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }
             return View();
-        } 
+        }
 
+        // GET: UserTypesController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
+
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, FoodServed foodServed)
+        public async Task<ActionResult> Edit(int id, UserType userType)
         {
+
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.PutAsJsonAsync("api/FoodServed/Put", foodServed);
+            HttpResponseMessage res = await client.PutAsJsonAsync<UserType>("api/UserType/put", userType);
 
             if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");
             }
 
-            return View(foodServed);
+            return View(userType);
         }
 
+        // GET: UserTypesController/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             HttpClient Client = _api.Initial();
-                HttpResponseMessage res = await Client.DeleteAsync($"api/FoodServed/delete/{id}");
-                if (res.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
+            HttpResponseMessage res = await Client.DeleteAsync($"api/UserType/delete/{id}");
+            if (res.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
