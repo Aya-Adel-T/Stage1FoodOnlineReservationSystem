@@ -27,7 +27,7 @@ public class Program
                 op.UseSqlServer(builder.Configuration.GetConnectionString("MyConn1"));
             }
         );
-        builder.Services.AddScoped<IRepository<Category>, CategoryServ>();
+        builder.Services.AddScoped<ICategoryServ, CategoryServ>();
         builder.Services.AddScoped<IRepository<FoodServed>, FoodServedRepoService>();
         builder.Services.AddScoped<IRepository<Order>, OrderRepoService>();
         builder.Services.AddScoped<IRepository<OrderDetails>, OrderDetailsRepoService>();

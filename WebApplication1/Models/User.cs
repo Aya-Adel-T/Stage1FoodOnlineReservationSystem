@@ -9,6 +9,12 @@ namespace WebApplication1.Models
     //}
     public  class User
     {
+        public User()
+        {
+            Orders = new List<Order>();
+            UserType = new UserType();
+        }
+
         [Key]
         public int Id { get; set; }
         [Required]
@@ -30,8 +36,8 @@ namespace WebApplication1.Models
         public string? Email { get; set; }
         [ForeignKey(nameof(UserType))]
         public int UserTypeId { get; set; }
-        public virtual UserType UserType { get; set; }
-        public virtual List<Order> Orders { get; set; }
+        public virtual UserType? UserType { get; set; }
+        public virtual List<Order?> Orders { get; set; }
         //[Required]
         //public UserType UserType { get; set; }
 

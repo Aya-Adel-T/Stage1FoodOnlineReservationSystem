@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
@@ -8,17 +9,23 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        public IRepository<Category> CategoryRepo { get; set; }
-        public CategoryController(IRepository<Category> categoryRepo)
+        public ICategoryServ CategoryRepo { get; set; }
+        public CategoryController(ICategoryServ categoryRepo)
         {
             CategoryRepo = categoryRepo;
         }
         [HttpGet]
         public ActionResult <List<Category>> getCategories()
         {
-           
             return CategoryRepo.GetAll();
         }
+
+        //[HttpGet]
+        //public ActionResult<List<Category>> GetCategoriesDropDownList()
+        //{
+        //    return CategoryRepo.GetAll();
+        //}
+
         [HttpGet("{id}")]
         public ActionResult<Category> getById(int id)
         { 

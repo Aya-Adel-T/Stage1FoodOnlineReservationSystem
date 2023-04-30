@@ -4,7 +4,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Repository
 {
-    public class CategoryServ : BaseRepoService, IRepository<Category>
+    public class CategoryServ : BaseRepoService, ICategoryServ
     {
         public CategoryServ(IDbContextFactory<ElDbContext> context) : base(context)
         {
@@ -75,5 +75,14 @@ namespace WebApplication1.Repository
                 customContext.SaveChanges();
             }
         }
+
+        //public SelectList GetCategoriesDropDownList()
+        //{
+        //    using (var customContext = Context.CreateDbContext())
+        //    {
+        //        SelectList CategoriesList = new SelectList(customContext.Categories.ToList(), "Name", "Id");
+        //        return CategoriesList;
+        //    }
+        //}
     }
 }

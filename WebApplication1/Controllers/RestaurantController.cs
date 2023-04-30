@@ -41,18 +41,10 @@ namespace WebApplication1.Controllers
         [HttpPut]
         public ActionResult put(int id, Restaurant rstrnt)
         {
-            Restaurant? restaurant = RestaurantRepo.GetDetails(id);
-            if (id != restaurant.Id)
+            if (rstrnt != null && rstrnt.Id != 0)
             {
-                //return StatusCode(400);
-                return BadRequest();
-            }
-            if (restaurant != null)
-            {
-
-
-                RestaurantRepo.UpdateBayza(id, rstrnt);
-                return Ok(restaurant);
+                RestaurantRepo.Update(rstrnt);
+                return Ok(rstrnt);
             }
             return NotFound();
         }

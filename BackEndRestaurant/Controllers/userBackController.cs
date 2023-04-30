@@ -1,6 +1,7 @@
 ﻿using BackEndRestaurant.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebApplication1.Models;
 
 namespace BackEndRestaurant.Controllers
@@ -25,13 +26,21 @@ namespace BackEndRestaurant.Controllers
         }
 
         // GET: UserBackController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            User user = new User();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.GetAsync($"api/User/getById/{id}");
+            if (res.IsSuccessStatusCode)
+            {
+                string data = res.Content.ReadAsStringAsync().Result;
+                user = JsonConvert.DeserializeObject<User>(data);
+            }
+            return View(user);
         }
 
         // GET: UserBackController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -39,16 +48,15 @@ namespace BackEndRestaurant.Controllers
         // POST: UserBackController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(User user)
         {
-            try
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.PostAsJsonAsync($"api/User/Post", user);
+            if (res.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
 
         // GET: UserBackController/Edit/5
@@ -60,37 +68,31 @@ namespace BackEndRestaurant.Controllers
         // POST: UserBackController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, User user)
         {
-            try
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.PutAsJsonAsync("api/User/put", user);
+
+            if (res.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(user);
         }
 
         // GET: UserBackController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            HttpClient Client = _api.Initial();
+            HttpResponseMessage res = await Client.DeleteAsync($"api/User/delete/{id}");
+            if (res.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
-        // POST: UserBackController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+     
     }
 }

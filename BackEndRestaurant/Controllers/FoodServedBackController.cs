@@ -1,9 +1,10 @@
 ﻿using BackEndRestaurant.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using WebApplication1.Models;
 
-namespace BackEndRestaurant.Controllers
+namespace BackEndCategory.Controllers
 {
     public class FoodServedBackController : Controller
     {
@@ -41,16 +42,12 @@ namespace BackEndRestaurant.Controllers
 
         public IActionResult Create()
         {
-
-
             return View();
-
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(FoodServed foodServed)
         {
-
             HttpClient client = _api.Initial();
             HttpResponseMessage res = await client.PostAsJsonAsync($"api/FoodServed/Post", foodServed); 
             if (res.IsSuccessStatusCode)
@@ -60,17 +57,37 @@ namespace BackEndRestaurant.Controllers
             return View();
         } 
 
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
+            HttpClient Client = _api.Initial();
+            try
+            {
+                //Category drop down list
+                var categoryList = await Client.GetFromJsonAsync<List<Category>>("api/Category/getCategories");
+                SelectList CategoriesSelectList = new SelectList(categoryList, "Id", "Name");
+
+                ViewBag.CategoryList = CategoriesSelectList;
+
+                //Restaurant drop down list
+                var restaurantList = await Client.GetFromJsonAsync<List<Restaurant>>("api/Restaurant/getRestaurants");
+                SelectList RestaurantsSelectList = new SelectList(restaurantList, "Id", "Name");
+
+                ViewBag.RestaurantList = RestaurantsSelectList;
+
+                return View();
+            }
+            catch (Exception e)
+            {
+            }
+
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, FoodServed foodServed)
+        public async Task<IActionResult> Edit(int id, FoodServed foodServed)
         {
             HttpClient client = _api.Initial();
-            HttpResponseMessage res = await client.PutAsJsonAsync("api/FoodServed/Put", foodServed);
-
+            HttpResponseMessage res = await client.PutAsJsonAsync("api/FoodServed/Put", foodServed);     
             if (res.IsSuccessStatusCode)
             {
                 return RedirectToAction("index");

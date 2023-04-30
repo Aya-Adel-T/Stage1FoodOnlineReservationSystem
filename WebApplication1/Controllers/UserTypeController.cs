@@ -39,22 +39,17 @@ namespace WebApplication1.Controllers
             return Ok(userType);
         }
         [HttpPut]
-        public ActionResult put(int id, UserType userType)
+        public ActionResult put( UserType userType)
         {
-           UserType? userType1 = UserTypeRepo.GetDetails(id);
-            if (id != userType.Id)
-            {
-                //return StatusCode(400);
-                return BadRequest();
-            }
-            if (userType1!= null)
-            {
 
-
-                UserTypeRepo.UpdateBayza(id, userType1);
+            if (userType != null && userType.Id != 0)
+            {
+                UserTypeRepo.Update(userType);
                 return Ok(userType);
             }
             return NotFound();
+
+         
         }
 
         [HttpPost]
