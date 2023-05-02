@@ -6,7 +6,7 @@ namespace WebApplication1.Models
     {
         public UserType()
         {
-            Users = new List<User>();
+            Users = new List<User?>();
         }
         [Key]
         public int Id { get; set; }

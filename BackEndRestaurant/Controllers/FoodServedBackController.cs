@@ -40,8 +40,20 @@ namespace BackEndCategory.Controllers
             return View(foodServed);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            HttpClient client = _api.Initial();
+            //Category drop down list
+            var categoryList = await client.GetFromJsonAsync<List<Category>>("api/Category/getCategories");
+            SelectList CategoriesSelectList = new SelectList(categoryList, "Id", "Name");
+
+            ViewBag.CategoryList = CategoriesSelectList;
+
+            //Restaurant drop down list
+            var restaurantList = await client.GetFromJsonAsync<List<Restaurant>>("api/Restaurant/getRestaurants");
+            SelectList RestaurantsSelectList = new SelectList(restaurantList, "Id", "Name");
+
+            ViewBag.RestaurantList = RestaurantsSelectList;
             return View();
         }
 

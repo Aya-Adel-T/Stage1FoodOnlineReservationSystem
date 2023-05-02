@@ -1,4 +1,5 @@
-﻿@model WebApplication1.Models.User
+﻿@using WebApplication1.Models;
+@model WebApplication1.Models.User
 
 @{
     ViewData["Title"] = "Create";
@@ -39,11 +40,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="UserTypeId" class="control-label"></label>
-                <select asp-for="UserTypeId" class ="form-control" asp-items="ViewBag.UserTypeId">
-                    <option> 
-                        1
-                    </option>
-                </select>
+                <select asp-for="UserTypeId" class="form-control" asp-items="ViewBag.userTypesList"> </select>
+                @*@Html.DropDownList("UserTypeId", (SelectList)ViewBag.userTypesList, "--Select UserType--", new { @class = "form-control" })*@
+                @*@Html.DropDownListFor(u => u.UserTypeId,  (SelectList)ViewBag.UserTypeList, "--Select UserType--", new { @class = "form-control" })*@
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

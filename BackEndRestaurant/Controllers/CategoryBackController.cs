@@ -1,5 +1,6 @@
 ﻿using BackEndRestaurant.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -82,8 +83,9 @@ namespace BackEndRestaurant.Controllers
             return View(Category);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+      
             return View();
         }
         
@@ -159,6 +161,16 @@ namespace BackEndRestaurant.Controllers
         //}
         #endregion
 
+
+        public ActionResult Delete(int? id)
+        {
+            return View();
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
 

@@ -11,11 +11,11 @@ namespace WebApplication1.Models
     {
         public User()
         {
-            Orders = new List<Order>();
-            UserType = new UserType();
+            Orders = new List<Order?>();
         }
 
         [Key]
+ 
         public int Id { get; set; }
         [Required]
         [MaxLength(50)]
@@ -37,11 +37,8 @@ namespace WebApplication1.Models
         [ForeignKey(nameof(UserType))]
         public int UserTypeId { get; set; }
         public virtual UserType? UserType { get; set; }
-        public virtual List<Order?> Orders { get; set; }
+        public virtual ICollection<Order?> Orders { get; set; }
         //[Required]
         //public UserType UserType { get; set; }
-
-
-
     }
 }

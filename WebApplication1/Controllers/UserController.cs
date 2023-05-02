@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Repository;
 
@@ -25,32 +24,24 @@ namespace WebApplication1.Controllers
             return UserRepo.GetDetails(id);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult delete(int id)
         {
-           User user = UserRepo.GetDetails(id);
+            UserRepo.Delete(id);
 
-            if (user == null)
+            if (id == 0)
             {
                 return NotFound();
             }
             UserRepo.Delete(id);
-            return Ok(user);
+            return Ok();
         }
         [HttpPut]
-        public ActionResult put(int id, User user)
+        public ActionResult put( User user)
         {
-            User? userr = UserRepo.GetDetails(id);
-            if (id != user.Id)
+            if (user != null && user.Id != 0)
             {
-                //return StatusCode(400);
-                return BadRequest();
-            }
-            if (userr != null)
-            {
-
-
-                UserRepo.UpdateBayza(id, userr);
+                UserRepo.Update(user);
                 return Ok(user);
             }
             return NotFound();

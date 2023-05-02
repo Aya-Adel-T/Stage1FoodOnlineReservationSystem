@@ -1,6 +1,7 @@
 ﻿using BackEndRestaurant.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using WebApplication1.Models;
 
@@ -40,14 +41,18 @@ namespace BackEndRestaurant.Controllers
         }
 
         // GET: UserBackController/Create
-        public IActionResult Create()
+        public async Task <IActionResult> Create()
         {
+            HttpClient client = _api.Initial();
+            //UserType drop down list
+            var UserTypeList = await client.GetFromJsonAsync<List<UserType>>("api/UserType/getUserTypes");
+            SelectList UserTypesSelectList = new SelectList(UserTypeList, "Id", "Name");
+            ViewBag.userTypesList = UserTypesSelectList;
             return View();
         }
 
         // POST: UserBackController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)
         {
             HttpClient client = _api.Initial();
@@ -60,8 +65,13 @@ namespace BackEndRestaurant.Controllers
         }
 
         // GET: UserBackController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
+            HttpClient client = _api.Initial();
+            //UserType drop down list
+            var UserTypeList = await client.GetFromJsonAsync<List<UserType>>("api/UserType/getUserTypes");
+            SelectList UserTypesSelectList = new SelectList(UserTypeList, "Id", "Name");
+            ViewBag.userTypesList = UserTypesSelectList;
             return View();
         }
 
