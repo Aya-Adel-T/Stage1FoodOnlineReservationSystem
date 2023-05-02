@@ -1,0 +1,43 @@
+﻿.order-btn {
+    border: 0px;
+    border-radius: 5px;
+    background-color: rgb(242, 159, 5);
+}
+.order-btn a {
+    color: white !important;
+}
+.ch-order {
+    display: flex;
+    align-items: center;
+}
+.ch-order .form-group {
+    margin-right: 25px;
+}
+.h-img img {
+    max-width: 450px;
+}
+.land .row {
+    align-items: center;
+    text-align: start;
+}
+.land .row p {
+    white-space: break-spaces;
+    line-height: 1.5;
+    width: 70%;
+}
+@media (max-width: 992px) {
+    .h-img img {
+        max-width: 360px;
+    }
+}
+@media (max-width: 768px) {
+    .h-img img {
+        max-width: 360px;
+    }
+    .land .col-6 {
+        width: 100%;
+    }
+    .land row {
+        flex-direction: column;
+    }
+}

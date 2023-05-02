@@ -1,8 +1,27 @@
-﻿@{
+﻿@using WebApplication1.Models;
+@model WebApplication1.Models.FoodServed
+@{
     ViewData["Title"] = "Home Page";
 }
+<div class="container land text-center">
+    <div class="row">
+        <div class="col-6">
+            <h1>
+                The Best Restaurants In Your Home
+            </h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <div class="ch-order">
+                <div class="form-group">
+                    @Html.DropDownListFor(f => f.RestaurantID,  (SelectList)ViewBag.RestaurantList, "Choose a Restaurant", new { @class = "form-control" })
+                </div>
+                <button class="order-btn">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="OrderFront" asp-action="Create">Order Now</a>
+                </button>
+            </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        </div>
+        <div class="col-6 h-img">
+            <img src="~/images/photo-1.png" />
+        </div>
+    </div>
 </div>
