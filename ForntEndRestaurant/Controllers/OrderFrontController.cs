@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ForntEndRestaurant.Helpers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using WebApplication1.Models;
@@ -7,48 +8,49 @@ namespace ForntEndRestaurant.Controllers
 {
     public class OrderFrontController : Controller
     {
-        //Uri baseAddress = new Uri("https://localhost:7191/api");
+        APIClient _api = new APIClient();
 
-        //private readonly HttpClient _client;
-        //public OrderFrontController()
-        //{
-        //_client = new HttpClient();
-        //_client.BaseAddress = baseAddress;
-        //}
-        private string baseAddress = "https://localhost:7191/api";
-        public IActionResult Create()
+
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
+            Order order = new Order();
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.GetAsync($"api/Order/getById/{id}");
+            if (res.IsSuccessStatusCode)
+            {
+                string data = res.Content.ReadAsStringAsync().Result;
+                order = JsonConvert.DeserializeObject<Order>(data);
+            }
+            return View(order);
+        }
 
-            //List<Order> CategorytList = new List<Order>();
-            //HttpResponseMessage resonse = _client.PostAsync(_client.BaseAddress + "/OrderFront/Post").Result;
-            //if (resonse.IsSuccessStatusCode)
-            //{
-            //    string data = resonse.Content.ReadAsStringAsync().Result;
-            //    CategorytList = JsonConvert.DeserializeObject<List<Order>>(data);
-            //}
-            //return View(CategorytList);
-            //SelectList Foodserved = new SelectList(context.Departments.ToList(), "Dept_Id", "Dept_Name");
-            //ViewBag.Departments = Departments;
+
+
+        public async Task <IActionResult> Create()
+        {
+            HttpClient client = _api.Initial();
+            //Restaurant drop down list
+            var restaurantList = await client.GetFromJsonAsync<List<Restaurant>>("api/Restaurant/getRestaurants");
+            SelectList RestaurantsSelectList = new SelectList(restaurantList, "Id", "Name");
+
+            ViewBag.RestaurantList = RestaurantsSelectList;
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(Order order)
         {
-           
-            using (var client = new HttpClient())
+            HttpClient client = _api.Initial();
+            HttpResponseMessage res = await client.PostAsJsonAsync($"api/Order/Post", order);
+            if (res.IsSuccessStatusCode)
             {
-                string message = "";
-                client.BaseAddress = new Uri(baseAddress);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage res = await client.PostAsJsonAsync<Order>("/Order/Post",order);
-                if (res.IsSuccessStatusCode)
-                {
-                    message = "Save data successfully";
-                } else { message = "Failed to save the damn data"; }
-                ViewBag.message = message;
+                return View("yourOrder");
             }
-            return View();
+
+        return View();
         }
+
+  
     }
 }
