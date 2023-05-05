@@ -45,7 +45,7 @@ namespace ForntEndRestaurant.Controllers
             HttpResponseMessage res = await client.PostAsJsonAsync($"api/Order/Post", order);
             if (res.IsSuccessStatusCode)
             {
-                return View("yourOrder");
+                return View("SuccessOrder");
             }
 
         return View();
